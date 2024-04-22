@@ -35,3 +35,25 @@ class Reading(BaseModel):
     humidity = models.DecimalField(max_digits=10, decimal_places=4)
     pressure = models.DecimalField(max_digits=10, decimal_places=4)
     timestamp = models.DateTimeField()
+
+
+#New classes:
+class FlutterSession(BaseModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    start_time = models.DateTimeField()
+    duration = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
+    avg_temp = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
+    avg_humid = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
+    avg_pressure = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
+
+class Progression(BaseModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    level = models.IntegerField()
+    streak = models.IntegerField()
+    #weekly_sessions = 
+    # badge1, badge2, badgeN...
+
+class Badges(BaseModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    progression = models.ForeignKey(Progression, on_delete=models.CASCADE)
+    badgeID = models.IntegerField()
