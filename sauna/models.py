@@ -48,12 +48,11 @@ class FlutterSession(BaseModel):
 
 class Progression(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    level = models.IntegerField()
-    streak = models.IntegerField()
+    level = models.IntegerField(null=True, blank=True)
+    streak = models.IntegerField(null=True, blank=True)
     #weekly_sessions = 
     # badge1, badge2, badgeN...
 
 class Badges(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    progression = models.ForeignKey(Progression, on_delete=models.CASCADE)
-    badgeID = models.IntegerField()
+    badgeID = models.TextField(null=True, blank=True)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import Device, SaunaSession, Reading, FlutterSession
+from ...models import Device, SaunaSession, Reading, FlutterSession, Progression
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -25,5 +25,11 @@ class ReadingSerializer(serializers.ModelSerializer):
 class FlutterSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlutterSession
+        fields = '__all__'
+        read_only_fields = ('user',)
+
+class ProgressionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Progression
         fields = '__all__'
         read_only_fields = ('user',)
