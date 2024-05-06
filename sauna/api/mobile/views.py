@@ -108,7 +108,6 @@ class FlutterSessionAPI(viewsets.ModelViewSet):
 
 class ProgressionAPI(APIView):
     def post(self, request):
-        print(self.request.data['level'])
         try:
             progression = Progression.objects.get(user=self.request.user)
             progression.level = self.request.data['level']

@@ -59,7 +59,7 @@ class LoginView(APIView):
                     'image': user.get_image_url,
                     'is_verified': user.is_verified
                 }
-                if user.is_verified:
+                if True: #user.is_verified: #Muutettu jottei verifikaatiota vaadita
                     token, created = auth_utils.regenerate_token(user=user)
                     data['token'] = token.key
                 login_history.save()

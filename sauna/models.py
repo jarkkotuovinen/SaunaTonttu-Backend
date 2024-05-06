@@ -41,6 +41,7 @@ class Reading(BaseModel):
 class FlutterSession(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
+    feelings = models.JSONField(default=list, blank=True)
     duration = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
     avg_temp = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
     avg_humid = models.DecimalField(default=0.00, max_digits=10, decimal_places=4)
