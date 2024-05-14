@@ -35,8 +35,8 @@ def regenerate_token(user):
 
 
 def validate_user(user):
-    if not user.is_verified:
-        raise serializers.ValidationError({'email': 'You are not verified'})
+    #if not user.is_verified: #Muutettu jottei verifikaatiota vaadita, muutettu myös coreapp/views.py
+        #raise serializers.ValidationError({'email': 'You are not verified'})
     if not user.is_active:
         raise serializers.ValidationError({'email': [_("Your account has been disabled by administrator"), ]})
 

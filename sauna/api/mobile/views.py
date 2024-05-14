@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from . import serializers
-from ...models import Device, SaunaSession, Reading
+from ...models import Device, SaunaSession, Reading, FlutterSession, Progression, Badges
 
 
 class DeviceMobileAPI(viewsets.ModelViewSet):
@@ -90,4 +90,61 @@ class MobileDashboardAPI(APIView):
             "highest_temp": highest_temp.temp if highest_temp else "N/A",
             "highest_pressure": highest_pressure.pressure if highest_pressure else "N/A",
             "highest_calorie_burn": highest_calorie_burn.calories_burned if highest_calorie_burn else "N/A",
+        }, status=status.HTTP_200_OK)
+
+class FlutterSessionAPI(viewsets.ModelViewSet):
+    serializer_class = serializers.FlutterSessionSerializer
+    queryset = FlutterSession.objects.all()
+
+    def get__queryset(self):
+        return self.queryset.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class ProgressionAPI(APIView):
+    def post(self, request):
+        try:
+            progression = Progression.objects.get(user=self.request.user)
+            progression.level = self.request.data['level']
+            progression.streak = self.request.data['streak']
+        except Progression.DoesNotExist:
+            progression = Progression.objects.create(user=self.request.user)
+            progression.level = self.request.data['level']
+            progression.streak = self.request.data['streak']
+        progression.save()
+        """try:
+            badges = Badges.objects.get(user=self.request.user)
+            badges.badgeID = self.request.data['badges']
+        except Badges.DoesNotExist:
+            badges = Badges.objects.create(user=self.request.user)
+            badges.badgeID = self.request.data['badges']
+        badges.save()"""
+        
+        return Response({
+        }, status=status.HTTP_201_CREATED)
+        
+    def get(self, request):
+        progression = Progression.objects.get(user=self.request.user)
+        level = progression.level
+        streak = progression.streak
+        #badges = Badges.objects.filter(user=self.request.user).order_by('-badgeID')
+        #print(badges)
+
+        return Response({
+            "level": level,
+            "streak": streak,
+            #"badges": badges
+        }, status=status.HTTP_200_OK)
+
+class BadgesAPI(APIView):
+    def get(self, request):
+        badges = Badges.objects.filter(user=self.request.user)
+
+        return Response({
+            "badges": badges
         }, status=status.HTTP_200_OK)
